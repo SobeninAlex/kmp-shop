@@ -1,4 +1,4 @@
-package org.example.kmp_shop.data.dto
+package org.example.kmp_shop.data.network.dto
 
 import kotlinx.serialization.Serializable
 

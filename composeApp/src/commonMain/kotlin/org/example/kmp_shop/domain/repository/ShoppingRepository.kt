@@ -1,11 +1,12 @@
 package org.example.kmp_shop.domain.repository
 
 import kotlinx.coroutines.flow.Flow
-import org.example.kmp_shop.domain.entity.Product
-import org.example.kmp_shop.utils.NetworkResult
+import org.example.kmp_shop.domain.model.Product
 
 interface ShoppingRepository {
 
-    fun getAllProducts(): Flow<NetworkResult<List<Product>>>
+    val allProducts: Flow<List<Product>>
+
+    fun getProductDetail(productId: Int): Flow<Product>
 
 }

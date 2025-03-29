@@ -1,18 +1,18 @@
 package org.example.kmp_shop.data.mapper
 
-import org.example.kmp_shop.data.dto.ProductDTO
-import org.example.kmp_shop.data.dto.RatingDTO
-import org.example.kmp_shop.domain.entity.Product
-import org.example.kmp_shop.domain.entity.Rating
+import org.example.kmp_shop.data.network.dto.ProductDTO
+import org.example.kmp_shop.data.network.dto.RatingDTO
+import org.example.kmp_shop.domain.model.Product
+import org.example.kmp_shop.domain.model.Rating
 
-fun ProductDTO.toEntity() = Product(
+fun ProductDTO.toModel() = Product(
     id = id,
     title = title,
     price = price,
     description = description,
     category = category,
     image = image,
-    rating = rating.toEntity()
+    rating = rating.toModel()
 )
 
 fun Product.toDTO() = ProductDTO(
@@ -30,7 +30,7 @@ fun Rating.toDTO() = RatingDTO(
     count = count
 )
 
-fun RatingDTO.toEntity() = Rating(
+fun RatingDTO.toModel() = Rating(
     rate = rate,
     count = count
 )

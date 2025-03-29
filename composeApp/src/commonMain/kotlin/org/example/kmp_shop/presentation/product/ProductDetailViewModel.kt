@@ -1,4 +1,4 @@
-package org.example.kmp_shop.presentation.home
+package org.example.kmp_shop.presentation.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,24 +11,25 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import org.example.kmp_shop.domain.repository.ShoppingRepository
 
-class HomeViewModel(
-    private val repository: ShoppingRepository
+class ProductDetailViewModel(
+    private val repository: ShoppingRepository,
+    private val productId: Int,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeScreenState())
-    val uiState = _uiState.asStateFlow()
+    private val _screenState = MutableStateFlow(ProductDetailScreenState())
+    val screenState = _screenState.asStateFlow()
 
     init {
-        getAllProducts()
+        getProductDetail()
     }
 
-    private fun getAllProducts() {
-        repository.allProducts
+    private fun getProductDetail() {
+        repository.getProductDetail(productId)
             .onStart {
-                _uiState.update { it.copy(loading = true) }
+                _screenState.update { it.copy(loading = true) }
             }
             .catch { error ->
-                _uiState.update { oldState ->
+                _screenState.update { oldState ->
                     oldState.copy(
                         loading = false,
                         errorMessage = error.message.toString()
@@ -36,8 +37,11 @@ class HomeViewModel(
                 }
             }
             .onEach { result ->
-                _uiState.update { oldState ->
-                    oldState.copy(loading = false, productList = result)
+                _screenState.update { oldState ->
+                    oldState.copy(
+                        loading = false,
+                        product = result
+                    )
                 }
             }.launchIn(viewModelScope)
     }
