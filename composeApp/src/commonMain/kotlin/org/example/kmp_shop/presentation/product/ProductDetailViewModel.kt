@@ -32,10 +32,7 @@ class ProductDetailViewModel(
 
     fun onEvent(event: ProductDetailEvent) {
         when(event) {
-            is ProductDetailEvent.OnClick.AddProductToCart -> {
-                addProductToCart(event.product)
-            }
-
+            is ProductDetailEvent.OnClick.AddProductToCart -> addProductToCart(event.product)
             else -> {}
         }
     }

@@ -9,6 +9,8 @@ import org.example.kmp_shop.data.database.dao.ProductDAO
 import org.example.kmp_shop.data.network.HttpClientFactory
 import org.example.kmp_shop.data.repository_impl.ProductRepositoryImpl
 import org.example.kmp_shop.domain.repository.ProductRepository
+import org.example.kmp_shop.presentation.cart.CartScreen
+import org.example.kmp_shop.presentation.cart.CartViewModel
 import org.example.kmp_shop.presentation.home.HomeViewModel
 import org.example.kmp_shop.presentation.product.ProductDetailViewModel
 import org.koin.core.module.Module
@@ -64,4 +66,6 @@ val shareModule = module {
     single<ProductDAO> {
         get<AppDatabase>().productDAO
     }
+
+    viewModelOf(::CartViewModel)
 }

@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import org.example.kmp_shop.navigation.LocalNavController
 import org.example.kmp_shop.navigation.MainGraph
+import org.example.kmp_shop.presentation.cart.CartScreen
 import org.example.kmp_shop.presentation.home.HomeScreen
 import org.example.kmp_shop.presentation.product.ProductDetailScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -65,7 +66,7 @@ fun App() {
                 }
 
                 composable<MainGraph.CartRoute> {
-
+                    CartScreen()
                 }
             }
         }
