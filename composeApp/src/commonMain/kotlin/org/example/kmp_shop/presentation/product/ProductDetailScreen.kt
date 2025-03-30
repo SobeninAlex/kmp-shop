@@ -25,14 +25,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.evaluateY
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +48,7 @@ import coil3.compose.AsyncImage
 import org.example.kmp_shop.domain.model.Product
 import org.example.kmp_shop.navigation.LocalNavController
 import org.example.kmp_shop.utils.compose.LoadingLayout
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -54,9 +60,12 @@ fun ProductDetailScreen(productId: Int, productTitle: String) {
         }
     )
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val event by viewModel.event.collectAsStateWithLifecycle(ProductDetailEvent.Initial)
 
     ProductDetailContent(
         screenState = screenState,
+        event = event,
+        sendEvent = viewModel::onEvent,
         productTitle = productTitle
     )
 }
@@ -65,13 +74,29 @@ fun ProductDetailScreen(productId: Int, productTitle: String) {
 @Composable
 private fun ProductDetailContent(
     screenState: ProductDetailScreenState,
+    event: ProductDetailEvent,
+    sendEvent: (ProductDetailEvent) -> Unit,
     productTitle: String
 ) {
     val navController = LocalNavController.current
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(event) {
+        when(event) {
+            is ProductDetailEvent.Snackbar.ProductAddedFailure -> {
+                snackbarHostState.showSnackbar(message = event.errMsg)
+            }
+            is ProductDetailEvent.Snackbar.ProductAddedToCartSuccess -> {
+                snackbarHostState.showSnackbar(message = "Product Added to Cart")
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Black.copy(alpha = 0.1f),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -119,14 +144,18 @@ private fun ProductDetailContent(
                 }
             }
 
-            ProductDetail(screenState.product)
+            ProductDetail(
+                product = screenState.product,
+                addToCartClicked = { sendEvent(ProductDetailEvent.OnClick.AddProductToCart(screenState.product)) }
+            )
         }
     }
 }
 
 @Composable
 private fun ProductDetail(
-    product: Product
+    product: Product,
+    addToCartClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -172,7 +201,7 @@ private fun ProductDetail(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(color = Color.Blue, width = 1.dp),
-                onClick = {}
+                onClick = addToCartClicked
             ) {
                 Text(text = "Add to cart")
             }

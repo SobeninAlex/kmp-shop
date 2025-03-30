@@ -12,4 +12,7 @@ sealed interface MainGraph {
         val productId: Int,
         val productTitle: String
     ) : MainGraph
+
+    @Serializable
+    data object CartRoute : MainGraph
 }

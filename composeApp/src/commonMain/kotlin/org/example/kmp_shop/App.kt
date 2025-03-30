@@ -63,6 +63,10 @@ fun App() {
                         productTitle = args.productTitle
                     )
                 }
+
+                composable<MainGraph.CartRoute> {
+
+                }
             }
         }
     }

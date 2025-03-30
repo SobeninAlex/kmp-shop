@@ -13,10 +13,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -62,7 +66,17 @@ private fun HomeContent(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Blue,
                     titleContentColor = Color.White
-                )
+                ),
+                actions = {
+                    IconButton(
+                        onClick = { navController.navigate(MainGraph.CartRoute) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ShoppingCart,
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         }
     ) { scaffoldPadding ->

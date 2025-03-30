@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import org.example.kmp_shop.domain.repository.ShoppingRepository
+import org.example.kmp_shop.domain.repository.ProductRepository
 
 class HomeViewModel(
-    private val repository: ShoppingRepository
+    private val repository: ProductRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenState())
